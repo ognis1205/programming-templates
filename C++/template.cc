@@ -44,6 +44,8 @@ using namespace std;
 #define SF(x) scanf("%f", &x)
 #define SLF(x) scanf("%lf", &x)
 #define MEMSET(x, y) memset(x, (y), sizeof(x))
+#define MP make_pair
+#define PB push_back
 #define FOR(i, j, k, inc) for (i64 i = j; i < k; i += inc)
 #define RFOR(i, j, k, dec) for (i64 i = j; i >= k; i -= dec)
 #define REP(i, j) FOR(i, 0, j, 1)
@@ -84,49 +86,19 @@ inline void AMax(T &t, U u) {
 }
 
 template<typename T>
-i64 SizeOf(T (&t)) {
+inline i64 SizeOf(T (&t)) {
   return static_cast<i64>(t.size());
 }
 
 template<typename T, size_t N>
-i64 SizeOf(T (&t)[N]) {
+inline i64 SizeOf(T (&t)[N]) {
   return static_cast<i64>(N);
 }
 
 /*
- * Templates of Fast I/O Methods.
+ * Debugging Class Template.
  */
-template <typename T> inline void Write(T t) {
-  i64 i = 20;
-  char buf[21];
-  buf[20] = '\n';
-  do {
-    buf[--i] = t % 10 + '0';
-    t/= 10;
-  } while (t);
-  do {
-    putchar(buf[i]);
-  } while (buf[i++] != '\n');
-}
-
-template <typename T> inline T ReadInt() {
-  T n = 0, s = 1;
-  char p = getchar();
-  if (p == '-') s = -1;
-  while ((p < '0' || p > '9') && p != EOF && p != '-') p = getchar();
-  if (p == '-') s = -1, p = getchar();
-  while(p >= '0' && p <= '9') {
-    n = (n << 3) + (n << 1) + (p - '0');
-    p = getchar();
-  }
-  return n * s;
-}
-
-#define Read(type) ReadInt<type>()
-
-/*
- * Templates of 'to_string' Families.
- */
+#ifdef LOCAL
 string to_string(char c) {
   return "'" + string({c}) + "'";
 }
@@ -200,22 +172,26 @@ string to_string(const tuple<Ts...>& t) {
   return "(" + PrintTuple<Size - 1, Ts...>{}(t) + ")";
 }
 
-/*
- * Debugging Class Template.
- */
-#ifdef LOCAL
-#  define VERSION(...) do {\
-                         cout << "GCC version is " << __GNUC__ << "." << __GNUC_MINOR__ << "." << __GNUC_PATCHLEVEL__ << endl;\
-                         cout << "C++ version is " << __cplusplus << endl;\
-                       } while (0)
-#  define DEBUG(...) cout << "[DEBUG]\t" << #__VA_ARGS__ << ": " << to_string(__VA_ARGS__) << endl;
+void Debug() {}
+
+template<typename Heads, typename... Tails>
+void Debug(Heads h, Tails... t) {
+  const auto Size = sizeof...(Tails);
+  cout << to_string(h) << (Size  ? ", " : "");
+  Debug(t...);
+}
+#  define VER(...) do {\
+                     cout << "GCC version is " << __GNUC__ << "." << __GNUC_MINOR__ << "." << __GNUC_PATCHLEVEL__ << endl; \
+                     cout << "C++ version is " << __cplusplus << endl;\
+                   } while (0)
+#  define DBG(...) cout << "[DEBUG]\t" << #__VA_ARGS__ << ": "; Debug(__VA_ARGS__); cout << endl;
 #else
-#  define VERSION(...)
-#  define DEBUG(...)
+#  define VER(...)
+#  define DBG(...)
 #endif
 
 /*
- * Initialization Settings.
+ * Initialization Settings and User-defined Variables.
  */
 struct Init {
   static constexpr int kIosPrecision = 15;
@@ -229,16 +205,22 @@ struct Init {
   }
 } INIT;
 
+i64 n = 0;
+i64 m = 1;
+vector<i64> k;
+
 /*
  * User-defined Functions.
  */
 void Solve() {
+  DBG(n, m, k);
   return;
 }
 
 /*
- * 'main' Function.
+ * Main Function.
  */
-int main() {
+int main(int argc, char* argv[]) {
+  Solve();
   return 0;
 }
