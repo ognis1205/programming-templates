@@ -214,7 +214,7 @@ void SetStdout(string s) {
 /*
  * User-defined Functions and Variables.
  */
-struct Identity {
+struct NoOp {
   template<typename T>
   constexpr auto operator()(T &&t) const noexcept -> decltype(forward<T>(t)) {
     return forward<T>(t);
@@ -231,12 +231,15 @@ struct Trim {
   }
 };
 
-template<typename T, class Preprocess=Identity>
-void SplitAs(const string &line, char delim, vector<T> &result, Preprocess &&f=Preprocess()) {
+template<typename T, class Preprocess=NoOp>
+void SplitAs(const string &line,
+             char delimiter,
+             vector<T> &result,
+             Preprocess &&preprocess=Preprocess()) {
   stringstream ss(line);
   string token;
-  while (getline(ss, token, delim)) {
-    result.push_back(from_string<T>(f(token)));
+  while (getline(ss, token, delimiter)) {
+    result.push_back(from_string<T>(preprocess(token)));
   }
 }
 
