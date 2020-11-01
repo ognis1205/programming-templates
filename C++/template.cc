@@ -221,6 +221,16 @@ struct Identity {
   }
 };
 
+struct Trim {
+  string operator()(const string &s, const string &whitespace=" \n\r\t\f\v") {
+    const auto from = s.find_first_not_of(whitespace);
+    if (from == string::npos) return "";
+    const auto to = s.find_last_not_of(whitespace);
+    const auto length = to - from + 1;
+    return s.substr(from, length);
+  }
+};
+
 template<typename T, class Preprocess=Identity>
 void SplitAs(const string &line, char delim, vector<T> &result, Preprocess &&f=Preprocess()) {
   stringstream ss(line);
