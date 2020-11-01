@@ -36,13 +36,6 @@ using namespace std;
  */
 #define STR(args...) #args
 #define CAT(x, y) x ## y
-#define SD(x) scanf("%d", &x)
-#define SLD(x) scanf("%ld", &x)
-#define SLLD(x) scanf("%lld", &x)
-#define SC(x) scanf("%c", &x)
-#define SS(x) scanf("%s", &x)
-#define SF(x) scanf("%f", &x)
-#define SLF(x) scanf("%lf", &x)
 #define MEMSET(x, y) memset(x, (y), sizeof(x))
 #define MP make_pair
 #define PB push_back
@@ -96,18 +89,17 @@ inline i64 SizeOf(T (&t)[N]) {
 }
 
 /*
- * Debugging Class Template.
+ * StoX and XtoS Functions.
  */
-#ifdef LOCAL
-string to_string(char c) {
+inline string to_string(char c) {
   return "'" + string({c}) + "'";
 }
 
-string to_string(bool b) {
+inline string to_string(bool b) {
   return b ? "true" : "false";
 }
 
-string to_string(const string &s) {
+inline string to_string(const string &s) {
   string ret = "";
   for (i64 i = 0; i < SizeOf(s); ++i) {
     ret += s[i];
@@ -115,13 +107,13 @@ string to_string(const string &s) {
   return '"' + ret + '"';
 }
 
-string to_string(const char *cs) {
+inline string to_string(const char *cs) {
   string ret(cs);
   return to_string(ret);
 }
 
 template<size_t N>
-string to_string(const bitset<N> &bs) {
+inline string to_string(const bitset<N> &bs) {
   string ret = "";
   for (i64 i = 0; i < SizeOf(bs); ++i) {
     ret += bs[i] + '0';
@@ -130,7 +122,7 @@ string to_string(const bitset<N> &bs) {
 }
 
 template<typename T>
-string to_string(const T (&t));
+inline string to_string(const T (&t));
 
 template<typename T, typename U>
 string to_string(const pair<T, U> &p) {
@@ -138,7 +130,7 @@ string to_string(const pair<T, U> &p) {
 }
 
 template<typename T>
-string to_string(const T (&t)) {
+inline string to_string(const T (&t)) {
   i64 start = 0, end = kInf;
   string ret = "[";
   auto cur = begin(t);
@@ -152,7 +144,7 @@ string to_string(const T (&t)) {
 
 template<i64 Index, typename... Ts>
 struct PrintTuple {
-  string operator() (const tuple<Ts...>& t) {
+  string operator()(const tuple<Ts...>& t) {
     string ret = PrintTuple<Index - 1, Ts...>{}(t);
     ret += (Index ? ", " : "");
     return ret + to_string(get<Index>(t));
@@ -161,42 +153,52 @@ struct PrintTuple {
 
 template<typename... Ts>
 struct PrintTuple<0, Ts...> {
-  string operator() (const tuple<Ts...>& t) {
+  string operator()(const tuple<Ts...>& t) {
     return to_string(get<0>(t));
   }
 };
 
 template<typename... Ts>
-string to_string(const tuple<Ts...>& t) {
+inline string to_string(const tuple<Ts...>& t) {
   const auto Size = tuple_size<tuple<Ts...>>::value;
   return "(" + PrintTuple<Size - 1, Ts...>{}(t) + ")";
 }
 
-void Debug() {}
+template <typename T>
+inline T from_string(const string &s) {
+  T ret;
+  stringstream ss(s);
+  ss >> ret;
+  return ret;
+}
 
-template<typename Heads, typename... Tails>
-void Debug(Heads h, Tails... t) {
+/*
+ * Debugging Class Template.
+ */
+#ifdef LOCAL
+void Debug() {}
+template<typename Head, typename... Tails>
+void Debug(Head h, Tails... ts) {
   const auto Size = sizeof...(Tails);
-  cout << to_string(h) << (Size  ? ", " : "");
-  Debug(t...);
+  cerr << to_string(h) << (Size  ? ", " : "");
+  Debug(ts...);
 }
 #  define VER(...) do {\
-                     cout << "GCC version is " << __GNUC__ << "." << __GNUC_MINOR__ << "." << __GNUC_PATCHLEVEL__ << endl; \
-                     cout << "C++ version is " << __cplusplus << endl;\
+                     cerr << "GCC version is " << __GNUC__ << "." << __GNUC_MINOR__ << "." << __GNUC_PATCHLEVEL__ << endl; \
+                     cerr << "C++ version is " << __cplusplus << endl;\
                    } while (0)
-#  define DBG(...) cout << "[DEBUG]\t" << #__VA_ARGS__ << ": "; Debug(__VA_ARGS__); cout << endl;
+#  define DBG(...) cerr << "[DEBUG]\t" << #__VA_ARGS__ << ": "; Debug(__VA_ARGS__); cerr << endl;
 #else
 #  define VER(...)
 #  define DBG(...)
 #endif
 
 /*
- * Initialization Settings and User-defined Variables.
+ * Initialization Settings.
  */
 struct Init {
   static constexpr int kIosPrecision = 15;
   static constexpr bool kAutoFlush = false;
-
   Init() {
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
@@ -205,15 +207,35 @@ struct Init {
   }
 } INIT;
 
-i64 n = 0;
-i64 m = 1;
-vector<i64> k;
+void SetStdin(string s) {
+  freopen(s.c_str(), "r", stdin);
+}
+
+void SetStdout(string s) {
+  freopen(s.c_str(), "w", stdout);
+}
 
 /*
- * User-defined Functions.
+ * User-defined Functions and Variables.
  */
+struct identity {
+  template<typename T>
+  constexpr auto operator()(T &&t) const noexcept -> decltype(forward<T>(t)) {
+    return forward<T>(t);
+  }
+};
+
+template<typename T, class Preprocess=identity>
+void SplitAs(const string &line, char delim, vector<T> &result, Preprocess &&f=Preprocess()) {
+  stringstream ss(line);
+  string token;
+  while (getline(ss, token, delim)) {
+    T parsed = from_string<T>(f(token));
+    result.push_back(parsed);
+  }
+}
+
 void Solve() {
-  DBG(n, m, k);
   return;
 }
 
@@ -221,6 +243,5 @@ void Solve() {
  * Main Function.
  */
 int main(int argc, char* argv[]) {
-  Solve();
   return 0;
 }
