@@ -100,11 +100,7 @@ inline string to_string(bool b) {
 }
 
 inline string to_string(const string &s) {
-  string ret = "";
-  for (i64 i = 0; i < SizeOf(s); ++i) {
-    ret += s[i];
-  }
-  return '"' + ret + '"';
+  return '"' + s + '"';
 }
 
 inline string to_string(const char *cs) {
@@ -218,20 +214,19 @@ void SetStdout(string s) {
 /*
  * User-defined Functions and Variables.
  */
-struct identity {
+struct Identity {
   template<typename T>
   constexpr auto operator()(T &&t) const noexcept -> decltype(forward<T>(t)) {
     return forward<T>(t);
   }
 };
 
-template<typename T, class Preprocess=identity>
+template<typename T, class Preprocess=Identity>
 void SplitAs(const string &line, char delim, vector<T> &result, Preprocess &&f=Preprocess()) {
   stringstream ss(line);
   string token;
   while (getline(ss, token, delim)) {
-    T parsed = from_string<T>(f(token));
-    result.push_back(parsed);
+    result.push_back(from_string<T>(f(token)));
   }
 }
 
