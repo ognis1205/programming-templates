@@ -74,8 +74,8 @@ inline void AMin(const T *t, const U &u) {
 }
 
 template<typename T, typename U>
-inline void AMax(T &t, U u) {
-  if (t < u) t = u;
+inline void AMax(const T *t, const U &u) {
+  if (*t < u) *t = u;
 }
 
 template<typename T>
