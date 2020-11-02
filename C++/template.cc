@@ -69,8 +69,8 @@ constexpr f64 kPi = 3.14159265358979323846;
  * Templates of Some Basic Operations.
  */
 template<typename T, typename U>
-inline void AMin(T &t, U u) {
-  if (u < t) t = u;
+inline void AMin(const T *t, const U &u) {
+  if (u < *t) *t = u;
 }
 
 template<typename T, typename U>
@@ -79,12 +79,12 @@ inline void AMax(T &t, U u) {
 }
 
 template<typename T>
-inline i64 SizeOf(T (&t)) {
+inline i64 SizeOf(const T (&t)) {
   return static_cast<i64>(t.size());
 }
 
 template<typename T, size_t N>
-inline i64 SizeOf(T (&t)[N]) {
+inline i64 SizeOf(const T (&t)[N]) {
   return static_cast<i64>(N);
 }
 
