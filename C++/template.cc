@@ -69,17 +69,17 @@ constexpr f64 kPi = 3.14159265358979323846;
  * Templates of Some Basic Operations.
  */
 template<typename T, typename U>
-inline void AMin(const T *t, const U &u) {
+inline void AMin(const T* t, const U& u) {
   if (u < *t) *t = u;
 }
 
 template<typename T, typename U>
-inline void AMax(const T *t, const U &u) {
+inline void AMax(const T* t, const U& u) {
   if (*t < u) *t = u;
 }
 
 template<typename T>
-inline i64 SizeOf(const T (&t)) {
+inline i64 SizeOf(const T& t) {
   return static_cast<i64>(t.size());
 }
 
@@ -99,17 +99,17 @@ inline string to_string(bool b) {
   return b ? "true" : "false";
 }
 
-inline string to_string(const string &s) {
+inline string to_string(const string& s) {
   return '"' + s + '"';
 }
 
-inline string to_string(const char *cs) {
+inline string to_string(const char* cs) {
   string ret(cs);
   return to_string(ret);
 }
 
 template<size_t N>
-inline string to_string(const bitset<N> &bs) {
+inline string to_string(const bitset<N>& bs) {
   string ret = "";
   for (i64 i = 0; i < SizeOf(bs); ++i) {
     ret += bs[i] + '0';
@@ -118,15 +118,15 @@ inline string to_string(const bitset<N> &bs) {
 }
 
 template<typename T>
-inline string to_string(const T (&t));
+inline string to_string(const T& t);
 
 template<typename T, typename U>
-string to_string(const pair<T, U> &p) {
+inline string to_string(const pair<T, U>& p) {
   return "(" + to_string(p.first) + ", " + to_string(p.second) + ")";
 }
 
 template<typename T>
-inline string to_string(const T (&t)) {
+inline string to_string(const T& t) {
   i64 start = 0, end = kInf;
   string ret = "[";
   auto cur = begin(t);
@@ -140,7 +140,7 @@ inline string to_string(const T (&t)) {
 
 template<i64 Index, typename... Ts>
 struct PrintTuple {
-  string operator()(const tuple<Ts...> &t) const {
+  string operator()(const tuple<Ts...>& t) const {
     string ret = PrintTuple<Index - 1, Ts...>{}(t);
     ret += (Index ? ", " : "");
     return ret + to_string(get<Index>(t));
@@ -149,19 +149,19 @@ struct PrintTuple {
 
 template<typename... Ts>
 struct PrintTuple<0, Ts...> {
-  string operator()(const tuple<Ts...> &t) const {
+  string operator()(const tuple<Ts...>& t) const {
     return to_string(get<0>(t));
   }
 };
 
 template<typename... Ts>
-inline string to_string(const tuple<Ts...> &t) {
+inline string to_string(const tuple<Ts...>& t) {
   const auto Size = tuple_size<tuple<Ts...>>::value;
   return "(" + PrintTuple<Size - 1, Ts...>{}(t) + ")";
 }
 
 template <typename T>
-inline T from_string(const string &s) {
+inline T from_string(const string& s) {
   T ret;
   stringstream ss(s);
   ss >> ret;
@@ -173,6 +173,7 @@ inline T from_string(const string &s) {
  */
 #ifdef LOCAL
 void Debug() {}
+
 template<typename Head, typename... Tails>
 void Debug(Head h, Tails... ts) {
   const auto Size = sizeof...(Tails);
@@ -203,11 +204,11 @@ struct Init {
   }
 } INIT;
 
-void SetStdin(string s) {
+inline void SetStdin(string s) {
   freopen(s.c_str(), "r", stdin);
 }
 
-void SetStdout(string s) {
+inline void SetStdout(string s) {
   freopen(s.c_str(), "w", stdout);
 }
 
@@ -216,13 +217,13 @@ void SetStdout(string s) {
  */
 struct NoOp {
   template<typename T>
-  constexpr auto operator()(T &&t) const noexcept -> decltype(forward<T>(t)) {
+  constexpr auto operator()(T&& t) const noexcept -> decltype(forward<T>(t)) {
     return forward<T>(t);
   }
 };
 
 struct Trim {
-  string operator()(const string &&s, const string &whitespace=" \n\r\t\f\v") const {
+  string operator()(const string& s, const string& whitespace=" \n\r\t\f\v") const {
     const auto from = s.find_first_not_of(whitespace);
     if (from == string::npos) return "";
     const auto to = s.find_last_not_of(whitespace);
@@ -232,10 +233,10 @@ struct Trim {
 };
 
 template<typename T, class Preprocess=NoOp>
-void SplitAs(const string &line,
+void SplitAs(const string& line,
              char delimiter,
-             vector<T> &result,
-             Preprocess &&preprocess=Preprocess()) const {
+             vector<T>& result,
+             Preprocess&& preprocess=Preprocess()) const {
   stringstream ss(line);
   string token;
   while (getline(ss, token, delimiter)) {
@@ -250,6 +251,6 @@ void Solve() {
 /*
  * Main Function.
  */
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
   return 0;
 }
