@@ -140,7 +140,7 @@ inline string to_string(const T (&t)) {
 
 template<i64 Index, typename... Ts>
 struct PrintTuple {
-  string operator()(const tuple<Ts...>& t) {
+  string operator()(const tuple<Ts...> &t) const {
     string ret = PrintTuple<Index - 1, Ts...>{}(t);
     ret += (Index ? ", " : "");
     return ret + to_string(get<Index>(t));
@@ -149,13 +149,13 @@ struct PrintTuple {
 
 template<typename... Ts>
 struct PrintTuple<0, Ts...> {
-  string operator()(const tuple<Ts...>& t) {
+  string operator()(const tuple<Ts...> &t) const {
     return to_string(get<0>(t));
   }
 };
 
 template<typename... Ts>
-inline string to_string(const tuple<Ts...>& t) {
+inline string to_string(const tuple<Ts...> &t) {
   const auto Size = tuple_size<tuple<Ts...>>::value;
   return "(" + PrintTuple<Size - 1, Ts...>{}(t) + ")";
 }
@@ -222,7 +222,7 @@ struct NoOp {
 };
 
 struct Trim {
-  string operator()(const string &s, const string &whitespace=" \n\r\t\f\v") {
+  string operator()(const string &&s, const string &whitespace=" \n\r\t\f\v") const {
     const auto from = s.find_first_not_of(whitespace);
     if (from == string::npos) return "";
     const auto to = s.find_last_not_of(whitespace);
@@ -235,7 +235,7 @@ template<typename T, class Preprocess=NoOp>
 void SplitAs(const string &line,
              char delimiter,
              vector<T> &result,
-             Preprocess &&preprocess=Preprocess()) {
+             Preprocess &&preprocess=Preprocess()) const {
   stringstream ss(line);
   string token;
   while (getline(ss, token, delimiter)) {
@@ -250,6 +250,6 @@ void Solve() {
 /*
  * Main Function.
  */
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
   return 0;
 }
