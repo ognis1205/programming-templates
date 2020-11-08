@@ -253,9 +253,11 @@ struct SplitAsManip {
   SplitAsManip(Container& cont,
                char delim,
                Preprocess& prep) : cont_(cont), delim_(delim), prep_(prep) {}
-  void operator()(istream& in) {
-    string token;
-    while (getline(in, token, delim_)) {
+  void operator()(istream& is) {
+    string dsv, token;
+    is >> dsv;
+    stringstream ss(dsv);
+    while (getline(ss, token, delim_)) {
       Append(cont_, FromString<T>(prep_(token)));
     }
   }
@@ -273,9 +275,9 @@ SplitAsManip<T, Container, Preprocess> SplitAs(Container& cont,
 }
 
 template<typename T, typename Container, typename Preprocess>
-istream& operator>>(istream& in, SplitAsManip<T, Container, Preprocess> manip) {
-  manip(in);
-  return in;
+istream& operator>>(istream& is, SplitAsManip<T, Container, Preprocess> manip) {
+  manip(is);
+  return is;
 }
 
 /*
