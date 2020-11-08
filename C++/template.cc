@@ -116,16 +116,16 @@ inline string to_string(const bitset<N>& bs) {
   return to_string(ret);
 }
 
-template<typename Iterator>
-inline string to_string(const Iterator& cont);
+template<typename Container>
+inline string to_string(const Container& cont);
 
 template<typename T, typename U>
 inline string to_string(const pair<T, U>& p) {
   return "(" + to_string(p.first) + ", " + to_string(p.second) + ")";
 }
 
-template<typename Iterator>
-inline string to_string(const Iterator& cont) {
+template<typename Container>
+inline string to_string(const Container& cont) {
   string ret = "[";
   for (auto it = begin(cont); it != end(cont); it++) {
     ret += to_string(*it) + (next(it) != end(cont) ? ", " : "");
@@ -206,18 +206,11 @@ inline T FromString(const string& s) {
   return ret;
 }
 
-struct NoOp {
-  template<typename T>
-  constexpr auto operator()(T&& t) const noexcept -> decltype(forward<T>(t)) {
-    return forward<T>(t);
-  }
-};
+template <typename... Ts>
+struct AppendMeth;
 
 template <typename... Ts>
-struct AppendOp;
-
-template <typename... Ts>
-struct AppendOp<vector<Ts...>> {
+struct AppendMeth<vector<Ts...>> {
   using Container = vector<Ts...>;
   template <typename... Args>
   static void apply(Container& cont, Args&&... args) {
@@ -226,7 +219,7 @@ struct AppendOp<vector<Ts...>> {
 };
 
 template <typename... Ts>
-struct AppendOp<list<Ts...>> {
+struct AppendMeth<list<Ts...>> {
   using Container = list<Ts...>;
   template <typename... Args>
   static void apply(Container& cont, Args&&... args) {
@@ -235,7 +228,7 @@ struct AppendOp<list<Ts...>> {
 };
 
 template <typename... Ts>
-struct AppendOp<set<Ts...>> {
+struct AppendMeth<set<Ts...>> {
   using Container = set<Ts...>;
   template <typename... Args>
   static void apply(Container& cont, Args&&... args) {
@@ -245,7 +238,7 @@ struct AppendOp<set<Ts...>> {
 
 template <typename Container, typename... Args>
 void Append(Container& cont, Args&&... args) {
-  AppendOp<Container>::apply(cont, forward<Args>(args)...);
+  AppendMeth<Container>::apply(cont, forward<Args>(args)...);
 }
 
 template<typename T, typename Container, typename Preprocess>
@@ -267,7 +260,14 @@ struct SplitAsManip {
   Preprocess& prep_;
 };
 
-template<typename T, typename Container, typename Preprocess=NoOp>
+struct Skip {
+  template<typename T>
+  constexpr auto operator()(T&& t) const noexcept -> decltype(forward<T>(t)) {
+    return forward<T>(t);
+  }
+};
+
+template<typename T, typename Container, typename Preprocess=Skip>
 SplitAsManip<T, Container, Preprocess> SplitAs(Container& cont,
                                                char delim,
                                                Preprocess&& prep=Preprocess()) {
@@ -296,6 +296,7 @@ int main(int argc, char* argv[]) {
     return 0;
   }
   SetStdin(argv[1]);
+  DBG();
   Solve();
   return 0;
 }
