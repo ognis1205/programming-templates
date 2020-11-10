@@ -68,12 +68,12 @@ constexpr f64 kPi = 3.14159265358979323846;
  * Templates of Some Basic Operations.
  */
 template<typename T, typename U>
-inline void AMin(const T* t, const U& u) {
+inline void AMin(T* t, const U& u) {
   if (u < *t) *t = u;
 }
 
 template<typename T, typename U>
-inline void AMax(const T* t, const U& u) {
+inline void AMax(T* t, const U& u) {
   if (*t < u) *t = u;
 }
 
@@ -127,13 +127,13 @@ struct has_emplace {
 };
 
 template<typename T>
-struct is_sequence : public decltype(has_emplace_back::check<T>(declval<T>())) {};
+struct is_sequential : public decltype(has_emplace_back::check<T>(declval<T>())) {};
 
 template<typename T>
 struct is_associative : public decltype(has_emplace::check<T>(declval<T>())) {};
 
 template<typename C, typename... Args>
-inline typename enable_if<is_sequence<C>::value, void>::type
+inline typename enable_if<is_sequential<C>::value, void>::type
 Append(C& cont, Args&&... args) {
   cont.emplace_back(forward<Args>(args)...);
 }
