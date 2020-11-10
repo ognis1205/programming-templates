@@ -127,19 +127,19 @@ struct has_emplace {
 };
 
 template<typename T>
-struct is_sequence_container : public decltype(has_emplace_back::check<T>(declval<T>())) {};
+struct is_sequence : public decltype(has_emplace_back::check<T>(declval<T>())) {};
 
 template<typename T>
-struct is_associative_container : public decltype(has_emplace::check<T>(declval<T>())) {};
+struct is_associative : public decltype(has_emplace::check<T>(declval<T>())) {};
 
 template<typename C, typename... Args>
-inline typename enable_if<is_sequence_container<C>::value, void>::type
+inline typename enable_if<is_sequence<C>::value, void>::type
 Append(C& cont, Args&&... args) {
   cont.emplace_back(forward<Args>(args)...);
 }
 
 template<typename C, typename... Args>
-inline typename enable_if<is_associative_container<C>::value, void>::type
+inline typename enable_if<is_associative<C>::value, void>::type
 Append(C& cont, Args&&... args) {
   cont.emplace(forward<Args>(args)...);
 }
