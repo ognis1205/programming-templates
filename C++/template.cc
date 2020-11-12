@@ -145,7 +145,8 @@ Append(C& cont, Args&&... args) {
 }
 
 template<typename T, typename Container, typename Preprocess>
-struct SplitAsManip {
+class SplitAsManip {
+ public:
   SplitAsManip(Container& cont,
                char delim,
                Preprocess& prep) : cont_(cont), delim_(delim), prep_(prep) {}
@@ -168,7 +169,8 @@ struct SplitAsManip {
 };
 
 template<typename Container, typename Preprocess>
-struct SplitAsManip<char, Container, Preprocess> {
+class SplitAsManip<char, Container, Preprocess> {
+ public:
   SplitAsManip(Container& cont,
                char delim,
                Preprocess& prep) : cont_(cont), prep_(prep) {}
