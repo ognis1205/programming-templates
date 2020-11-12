@@ -167,6 +167,24 @@ struct SplitAsManip {
   Preprocess& prep_;
 };
 
+template<typename Container, typename Preprocess>
+struct SplitAsManip<char, Container, Preprocess> {
+  SplitAsManip(Container& cont,
+               char delim,
+               Preprocess& prep) : cont_(cont), prep_(prep) {}
+  istream& operator()(istream& is) {
+    string s;
+    is >> s;
+    for (i64 i = 0; i < s.size(); i++) {
+      Append(cont_, s[i]);
+	}
+    return is;
+  }
+ private:
+  Container& cont_;
+  Preprocess& prep_;
+};
+
 struct Skip {
   template<typename T>
   constexpr auto operator()(T&& t) const noexcept -> decltype(forward<T>(t)) {
