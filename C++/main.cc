@@ -316,7 +316,8 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  if (!(new Stdin(argv[1]))) {
+  Stdin stdin(argv[1]);
+  if (!stdin) {
     cerr << "File open error: " << argv[1] << endl;
     return 1;
   }
