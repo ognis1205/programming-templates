@@ -206,15 +206,23 @@ struct Skip {
   }
 };
 
-template<typename T, typename Container, typename Preprocess=Skip>
+template<typename T,
+         typename Container,
+         typename Preprocess=Skip,
+         typename enable_if<is_same<T, char>::value || is_same<T, wchar_t>::value,
+                            nullptr_t>::type=nullptr>
 SplitAsManip<T, Container, Preprocess> SplitAs(Container& cont,
                                                Preprocess&& prep=Preprocess()) {
   return SplitAsManip<T, Container, Preprocess>(cont, '\0', prep);
 }
 
-template<typename T, typename Container, typename Preprocess=Skip>
+template<typename T,
+         typename Container,
+         typename Preprocess=Skip,
+         typename enable_if<!is_same<T, char>::value && !is_same<T, wchar_t>::value,
+                            nullptr_t>::type=nullptr>
 SplitAsManip<T, Container, Preprocess> SplitAs(Container& cont,
-                                               char delim,
+                                               char delim=',',
                                                Preprocess&& prep=Preprocess()) {
   return SplitAsManip<T, Container, Preprocess>(cont, delim, prep);
 }
@@ -313,6 +321,7 @@ void Debug(Head h, Tail... ts) {
  * User-defined Functions and Variables.
  */
 void Solve() {
+  return;
 }
 
 /*

@@ -20,15 +20,15 @@ import cats.effect.IO
 
 class Tokenizer(val reader: JBufferedReader) {
   def nextLong(): Long = {
-    if (!next()) throw new NoSuchElementException
-    val sgn = if (peek == '-') -1l else 1
+    if (!hasNext()) throw new NoSuchElementException
+    val sgn = if (peek() == '-') -1l else 1
     if (sgn == -1l) ignore()
-    if (peek < '0' || '9' < peek) throw new NumberFormatException
+    if (peek() < '0' || '9' < peek()) throw new NumberFormatException
     @tailrec
-    def loop(acc: Long=0) : Long =
-      if ('0' <= peek && peek <= '9') {
-        loop(acc * 10 + read() - '0')
-      } else if (isEnd || isSpaceOrControl) {
+    def loop(acc: Long=0): Long =
+      if ('0' <= peek() && peek() <= '9') {
+        loop(acc * 10 + next() - '0')
+      } else if (nextIsEnd() || nextIsSpaceOrControl()) {
         sgn * acc
       } else {
         throw new NumberFormatException
@@ -39,14 +39,14 @@ class Tokenizer(val reader: JBufferedReader) {
   }
 
   def nextString(): String = {
-    if (!next()) throw new NoSuchElementException
+    if (!hasNext()) throw new NoSuchElementException
     val builder = new StringBuilder
     @tailrec
     def loop(): String =
-      if (isEnd || isSpaceOrControl) {
+      if (nextIsEnd() || nextIsSpaceOrControl()) {
         builder.toString
       } else {
-        builder.append(read().toChar)
+        builder.append(next().toChar)
         loop()
       }
     val s = loop()
@@ -55,15 +55,15 @@ class Tokenizer(val reader: JBufferedReader) {
   }
 
   def readLine(): String = {
-    if (isEnd) throw new NoSuchElementException
+    if (nextIsEnd()) throw new NoSuchElementException
     skipNewline()
     val builder = new StringBuilder
     @tailrec
     def loop(): String =
-      if (isEnd || isNewLine) {
+      if (nextIsEnd() || nextIsNewLine()) {
         builder.toString
       } else {
-        builder.append(read().toChar)
+        builder.append(next().toChar)
         loop()
       }
     loop()
@@ -77,7 +77,7 @@ class Tokenizer(val reader: JBufferedReader) {
 
   private[this] var isFirst: Boolean = true
 
-  private[this] def read(): Int = {
+  private[this] def next(): Int = {
     val c = peeked match {
       case None => reader.read()
       case Some(c) => { peeked = None; c }
@@ -85,9 +85,9 @@ class Tokenizer(val reader: JBufferedReader) {
     isFirst = false; c
   }
 
-  private[this] def ignore(): Unit = { read(); () }
+  private[this] def ignore(): Unit = { next(); () }
 
-  private[this] def peek: Int = peeked match {
+  private[this] def peek(): Int = peeked match {
     case None => {
       val c = reader.read()
       peeked = Some(c)
@@ -96,41 +96,41 @@ class Tokenizer(val reader: JBufferedReader) {
     case Some(c) => c
   }
 
-  private[this] def isEnd: Boolean = peek == -1
+  private[this] def nextIsEnd(): Boolean = peek() == -1
 
-  private[this] def isCR: Boolean = peek == 13
+  private[this] def nextIsCR(): Boolean = peek() == 13
 
-  private[this] def isLF: Boolean = peek == 10
+  private[this] def nextIsLF(): Boolean = peek() == 10
 
-  private[this] def isNewLine: Boolean = isLF || isCR
+  private[this] def nextIsNewLine(): Boolean = nextIsLF() || nextIsCR()
 
-  private[this] def isNotEnd: Boolean = !isEnd
+  private[this] def nextIsNotEnd(): Boolean = !nextIsEnd()
 
-  private[this] def isSpaceOrControl: Boolean = (0 <= peek && peek <= 32) || peek == 127
+  private[this] def nextIsSpaceOrControl(): Boolean = (0 <= peek() && peek() <= 32) || peek() == 127
 
   @tailrec
   private[this] def skipSpaceAndControl(): Unit =
-    if (isSpaceOrControl) {
+    if (nextIsSpaceOrControl()) {
       ignore()
       skipSpaceAndControl()
     }
 
   @tailrec
   private[this] def skipTrailingSpaces(): Unit =
-    if (!isNewLine && isSpaceOrControl) {
+    if (!nextIsNewLine() && nextIsSpaceOrControl()) {
       ignore()
       skipTrailingSpaces()
     }
 
   private[this] def skipNewline(): Unit =
     if (!isFirst) {
-      if (isCR) ignore()
-      if (isLF) ignore()
+      if (nextIsCR()) ignore()
+      if (nextIsLF()) ignore()
     }
 
-  private[this] def next(): Boolean = {
+  private[this] def hasNext(): Boolean = {
     skipSpaceAndControl()
-    isNotEnd
+    nextIsNotEnd()
   }
 }
 
@@ -189,9 +189,7 @@ def readStrings(delim: String)(implicit t: Tokenizer): IO[Seq[String]] = IO {
 
 implicit val cout = new JPrintWriter(Console.out, true);
 implicit val cin = new Tokenizer(Console.in);
-
 val test: IO[Unit] = for {
-  _ <- debug("Welcome to Scala! println")
   _ <- debug("Input an integer")
   a <- nextInt()
   _ <- debug(a)
