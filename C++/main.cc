@@ -161,6 +161,7 @@ class SplitAsManip {
                char delim,
                Preprocess& prep) : cont_(cont), delim_(delim), prep_(prep) {}
   istream& operator()(istream& is) {
+    i64 pos=0;
     string dsv, token;
     is >> dsv;
     stringstream ss(dsv);
@@ -168,7 +169,8 @@ class SplitAsManip {
       T t;
       stringstream ss(token);
       ss >> t;
-      Append(cont_, prep_(t));
+      Append(cont_, prep_(pos, t));
+      pos++;
     }
     return is;
   }
@@ -188,7 +190,7 @@ class SplitAsManip<char, Container, Preprocess> {
     string s;
     is >> s;
     for (i64 i = 0; i < s.size(); i++) {
-      Append(cont_, prep_(s[i]));
+      Append(cont_, prep_(i, s[i]));
 	}
     return is;
   }
@@ -203,6 +205,12 @@ struct Skip {
     return forward<T>(t);
   }
 };
+
+template<typename T, typename Container, typename Preprocess=Skip>
+SplitAsManip<T, Container, Preprocess> SplitAs(Container& cont,
+                                               Preprocess&& prep=Preprocess()) {
+  return SplitAsManip<T, Container, Preprocess>(cont, '\0', prep);
+}
 
 template<typename T, typename Container, typename Preprocess=Skip>
 SplitAsManip<T, Container, Preprocess> SplitAs(Container& cont,
