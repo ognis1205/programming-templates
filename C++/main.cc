@@ -299,10 +299,10 @@ void Debug(Head h, Tail... ts) {
   cerr << h << (Size  ? ", " : "");
   Debug(ts...);
 }
-#  define VER(...) do {                                                 \
-    cerr << "GCC version is " << __GNUC__ << "." << __GNUC_MINOR__ << "." << __GNUC_PATCHLEVEL__ << endl; \
-    cerr << "C++ version is " << __cplusplus << endl;                   \
-  } while (0)
+#  define VER(...) do {\
+                     cerr << "GCC version is " << __GNUC__ << "." << __GNUC_MINOR__ << "." << __GNUC_PATCHLEVEL__ << endl;\
+                     cerr << "C++ version is " << __cplusplus << endl;\
+                   } while (0)
 #  define DBG(...) cerr << "\u001b[36m[DEBUG]\u001b[0m\t" << #__VA_ARGS__ << ": "; Debug(__VA_ARGS__); cerr << endl;
 #else
 #  define VER(...)
