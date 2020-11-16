@@ -9,7 +9,6 @@
   */
 import $ivy.`org.typelevel:cats-core_2.13:2.1.1`
 import $ivy.`org.typelevel:cats-effect_2.13:2.1.1`
-
 import scala.annotation.tailrec
 import scala.annotation.elidable
 import scala.annotation.elidable._
