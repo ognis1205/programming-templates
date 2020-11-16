@@ -201,7 +201,7 @@ class SplitAsManip<char, Container, Preprocess> {
 
 struct Skip {
   template<typename T>
-  constexpr auto operator()(T&& t) const noexcept -> decltype(forward<T>(t)) {
+  constexpr auto operator()(i64& i, T&& t) const noexcept -> decltype(forward<T>(t)) {
     return forward<T>(t);
   }
 };
