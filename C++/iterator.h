@@ -12,32 +12,32 @@ namespace types {
 
   using namespace std;
 
-  struct null_sentinal_t {
-    template<typename Rhs, typename enable_if<!is_same<Rhs, null_sentinal_t>::value, nullptr_t>::type=nullptr>
-    friend bool operator==(const Rhs& rhs, null_sentinal_t) {
+  struct SentinalType {
+    template<typename Rhs, typename enable_if<!is_same<Rhs, SentinalType>::value, nullptr_t>::type=nullptr>
+    friend bool operator==(const Rhs& rhs, SentinalType) {
       return !*rhs;
     }
 
-    template<typename Rhs, typename enable_if<!is_same<Rhs, null_sentinal_t>::value, nullptr_t>::type=nullptr>
-    friend bool operator!=(const Rhs& rhs, null_sentinal_t) {
-      return !(rhs == null_sentinal_t{});
+    template<typename Rhs, typename enable_if<!is_same<Rhs, SentinalType>::value, nullptr_t>::type=nullptr>
+    friend bool operator!=(const Rhs& rhs, SentinalType) {
+      return !(rhs == SentinalType{});
     }
 
-    template<typename Lhs, typename enable_if<!is_same<Lhs, null_sentinal_t>::value, nullptr_t>::type=nullptr>
-    friend bool operator==(null_sentinal_t, const Lhs& lhs) {
+    template<typename Lhs, typename enable_if<!is_same<Lhs, SentinalType>::value, nullptr_t>::type=nullptr>
+    friend bool operator==(SentinalType, const Lhs& lhs) {
       return !*lhs;
     }
 
-    template<typename Lhs, typename enable_if<!is_same<Lhs, null_sentinal_t>::value, nullptr_t>::type=nullptr>
-    friend bool operator!=(null_sentinal_t, const Lhs& lhs) {
-      return !(null_sentinal_t{} == lhs);
+    template<typename Lhs, typename enable_if<!is_same<Lhs, SentinalType>::value, nullptr_t>::type=nullptr>
+    friend bool operator!=(SentinalType, const Lhs& lhs) {
+      return !(SentinalType{} == lhs);
     }
 
-    friend bool operator==(null_sentinal_t, null_sentinal_t) {
+    friend bool operator==(SentinalType, SentinalType) {
       return true;
     }
 
-    friend bool operator!=(null_sentinal_t, null_sentinal_t) {
+    friend bool operator!=(SentinalType, SentinalType) {
       return false;
     }
   };
