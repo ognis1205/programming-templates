@@ -128,7 +128,7 @@ struct Stdout {
 template<typename T, typename Callback>
 class SplitAsManip {
  public:
-  SplitAsManip(char delim, Callback& callback) : delim_(delim), callback_(callback) {}
+  SplitAsManip(char delim, Callback&& callback) : delim_(delim), callback_(callback) {}
   istream& operator()(istream& is) {
     i64 pos=0;
     string dsv; is >> dsv; istringstream iss(dsv);
@@ -146,7 +146,7 @@ class SplitAsManip {
 template<typename Callback>
 class SplitAsManip<char, Callback> {
  public:
-  SplitAsManip(Callback& callback) : callback_(callback) {}
+  SplitAsManip(Callback&& callback) : callback_(callback) {}
   istream& operator()(istream& is) {
     string s; is >> s;
     for (i64 i = 0; i < s.size(); i++) callback_(i, &s[i]);
@@ -158,12 +158,12 @@ class SplitAsManip<char, Callback> {
 
 template<typename T, typename Callback, typename enable_if<!is_same<T, char>::value, nullptr_t>::type=nullptr>
 SplitAsManip<T, Callback> SplitAs(char delim, Callback&& callback) {
-  return SplitAsManip<T, Callback>(delim, callback);
+  return SplitAsManip<T, Callback>(delim, forward<Callback>(callback));
 }
 
 template<typename T, typename Callback, typename enable_if<is_same<T, char>::value, nullptr_t>::type=nullptr>
 SplitAsManip<T, Callback> SplitAs(Callback&& callback) {
-  return SplitAsManip<T, Callback>(callback);
+  return SplitAsManip<T, Callback>(forward<Callback>(callback));
 }
 
 template<typename T, typename Callback>
@@ -235,10 +235,10 @@ ostream& operator<<(ostream& os, const pair<T, U>& p) noexcept {
 void Debug() {}
 
 template<typename Head, typename... Tail>
-void Debug(Head h, Tail... ts) {
+void Debug(Head& h, Tail&&... ts) {
   const auto Size = sizeof...(Tail);
   cerr << h << (Size  ? ", " : "");
-  Debug(ts...);
+  Debug(forward<Tail&&>(ts)...);
 }
 #  define VER(...) do {\
                      cerr << "GCC version is " << __GNUC__ << "." << __GNUC_MINOR__ << "." << __GNUC_PATCHLEVEL__ << endl;\
