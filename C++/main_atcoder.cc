@@ -1,30 +1,34 @@
 /* AtCoder C++ Template. */
-#include <iostream>
-#include <iomanip>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <sstream>
-#include <queue>
-#include <deque>
-#include <bitset>
-#include <iterator>
-#include <list>
-#include <stack>
-#include <map>
-#include <set>
-#include <functional>
-#include <numeric>
-#include <complex>
-#include <utility>
-#include <limits>
-#include <random>
-#include <time.h>
-#include <math.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <assert.h>
+#ifdef LOCAL
+#  include <iostream>
+#  include <iomanip>
+#  include <string>
+#  include <vector>
+#  include <algorithm>
+#  include <sstream>
+#  include <queue>
+#  include <deque>
+#  include <bitset>
+#  include <iterator>
+#  include <list>
+#  include <stack>
+#  include <map>
+#  include <set>
+#  include <functional>
+#  include <numeric>
+#  include <complex>
+#  include <utility>
+#  include <limits>
+#  include <random>
+#  include <time.h>
+#  include <math.h>
+#  include <stdio.h>
+#  include <string.h>
+#  include <stdlib.h>
+#  include <assert.h>
+#else
+#  include <bits/stdc++.h>
+#endif
 
 using namespace std;
 
@@ -37,6 +41,10 @@ using namespace std;
 #define RALL(cont) end(cont), begin(cont)
 #define FOREACH(it, cont) for (auto it = begin(cont); it != end(cont); it++)
 #define TRAV(e, cont) for (auto& e: cont)
+#define pb push_back
+#define mp make_pair
+#define fst first
+#define scd second
 #define ASSERT(expr...) assert((expr))
 #define IN(x, y, z) (y <= x && x <= z)
 #define X_T_X template<typename T>
@@ -54,8 +62,9 @@ X_S_X using bits = bitset<S>;
 X_T_S_X using arr = array<T, S>;
 X_T_X using vec = vector<T>;
 X_T_X using com = complex<T>;
-X_T_X using pql = priority_queue<T, vector<T>, less<T>>;
-X_T_X using pqg = priority_queue<T, vector<T>, greater<T>>;
+X_T_X using pque = priority_queue<T, vector<T>>;
+X_T_X using pquel = priority_queue<T, vector<T>, less<T>>;
+X_T_X using pqueg = priority_queue<T, vector<T>, greater<T>>;
 
 /* Constants. */
 constexpr ll INF = 1010000000000000017LL;
@@ -124,10 +133,10 @@ inline void CIN(db& d) { str t; CIN(t); d = stod(t); }
 inline void CIN(ld& d) { str t; CIN(t); d = stold(t); }
 X_T_Us_X void CIN(T& t, Us&... us) { CIN(t); CIN(us...); }
 X_T_X void CIN(com<T>& c) { T a, b; CIN(a, b); c = {a, b}; }
-X_T_U_X void CIN(pair<T, U>& p) { CIN(p.first, p.second); }
+X_T_U_X void CIN(pair<T, U>& p) { CIN(p.fst, p.scd); }
 X_T_X void CIN(vec<T>& v) { TRAV(e, v) CIN(e); }
 X_T_S_X void CIN(arr<T, S>& a) { TRAV(e, a) CIN(e); }
-X_T_X void CINV(int& n, vec<T>& v) { CIN(n); v.resize(n); TRAV(e, v) CIN(e); }
+X_T_X void CINV(int& n, vec<T>& v) { v.resize(n); TRAV(e, v) CIN(e); }
 
 #define STR to_string
 
@@ -179,15 +188,15 @@ X_T_X str STR(const T& cont) {
 
 X_T_U_X str STR(pair<T,U>& p) {
 #ifdef LOCAL
-  return "(" + STR(p.first) + ", " + STR(p.second) + ")";
+  return "(" + STR(p.fst) + ", " + STR(p.scd) + ")";
 #else
-  return ts(p.f)+" "+ts(p.s);
+  return ts(p.fst) + " " + ts(p.scd);
 #endif
 }
 
+void ENDL() { cout << endl; }
 void COUT() {}
-X_T_X void COUT(T& t) { cout << STR(t); }
-X_T_Us_X void COUT(const T& t, Us&&... us) { COUT(t); COUT(sizeof...(us)  ? ", " : ""); COUT(forward<Us>(us)...); }
+X_T_Us_X void COUT(const T& t, Us&&... us) { cout << STR(t); cout << (sizeof...(us) ? ", " : ""); COUT(forward<Us>(us)...); }
 
 struct STDIN {
  public:
@@ -216,7 +225,14 @@ X_T_Us_X void DEBUG(const T& t, Us&&... us) { cerr << STR(t); cerr << (sizeof...
 #  define DBG(...)
 #endif
 
-/* Main Function. */
+/* Main Function.
+ * Stuff you should look for:
+ *  - int overflow, array bounds
+ *  - special cases (n=1?)
+ *  - do smth instead of nothing and stay organized
+ *  - WRITE STUFF DOWN
+ *  - DON'T GET STUCK ON ONE APPROACH
+ */
 int main(int argc, char* argv[]) {
   if (argc != 2) {
     cerr << "Usage: " << argv[0] << " <input file name>" << endl;
