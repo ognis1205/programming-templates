@@ -1,4 +1,4 @@
-/* AtCoder C++ Template. */
+/* $File: #FILENAME#, $Timestamp: #TIMESTAMP# */
 #ifdef LOCAL
 #  include <iostream>
 #  include <iomanip>
@@ -96,7 +96,6 @@ X_T_X inline bool AMIN(T& x, const T& y) { return y < x ? x = y, 1 : 0; }
 X_T_X inline bool AMAX(T& x, const T& y) { return x < y ? x = y, 1 : 0; }
 X_T_X inline int SIZE(const T& t) { return static_cast<int>(t.size()); }
 X_T_S_X inline int SIZE(const T (&t)[S]) { return static_cast<int>(S); }
-
 X_T_U_X T FST(T l, T r, U p) {
   r++; ASSERT(l <= r);
   while (l < r) {
@@ -105,7 +104,6 @@ X_T_U_X T FST(T l, T r, U p) {
   }
   return l;
 }
-
 X_T_U_X T LST(T l, T r, U p) {
   l--; ASSERT(l <= r);
   while (l < r) {
@@ -114,16 +112,8 @@ X_T_U_X T LST(T l, T r, U p) {
   }
   return l;
 }
-
-X_T_X void REMDUP(vec<T>& v) {
-  sort(ALL(v));
-  v.erase(unique(ALL(v)), end(v));
-}
-
-X_T_U_X void ERASE(T& t, const U& u) {
-  auto it = t.find(u); ASSERT(it != end(t));
-  t.erase(it);
-}
+X_T_X void REMDUP(vec<T>& v) { sort(ALL(v)); v.erase(unique(ALL(v)), end(v)); }
+X_T_U_X void ERASE(T& t, const U& u) { auto it = t.find(u); ASSERT(it != end(t)); t.erase(it); }
 
 /* IO Functions. */
 X_T_X void CIN(cop<T>& c);
@@ -139,46 +129,19 @@ X_T_U_X void CIN(pair<T, U>& p) { CIN(p.fst, p.scd); }
 X_T_X void CIN(vec<T>& v) { TRAV(e, v) CIN(e); }
 X_T_S_X void CIN(arr<T, S>& a) { TRAV(e, a) CIN(e); }
 X_T_X void CINV(int& n, vec<T>& v) { v.resize(n); TRAV(e, v) CIN(e); }
-
 #define STR to_string
-
 str STR(char c) { return str(1, c); }
 str STR(const char* cs) { return static_cast<str>(cs); }
 str STR(const str& s) { return s; }
-str STR(const bool& b) {
-#ifdef LOCAL
-  return b ? "true" : "false";
-#else
-  return STR(static_cast<int>(b));
-#endif
-}
+str STR(const bool& b) { return STR(static_cast<int>(b)); }
 X_T_X str STR(const cop<T>& c) { ostringstream ss; ss << c; return ss.str(); }
 X_S_X str STR(const bits<S>& bs) { str s = ""; REP (i, S) s += char('0' + bs[i]); return s; }
 X_T_U_X str STR(const pair<T, U>& p);
-X_T_X str STR(const T& cont) {
-#ifdef LOCAL
-  str s = "{";
-  FOREACH(it, cont) s += STR(*it) + (next(it) != end(cont) ? ", " : "");
-  s += "}";
-  return s;
-#else
-  str s = "{";
-  FOREACH(it, cont)  s += STR(*it) + (next(it) != end(cont) ? " " : "");
-  s += "}";
-  return s;
-#endif
-}
-X_T_U_X str STR(const pair<T, U>& p) {
-#ifdef LOCAL
-  return "(" + STR(p.fst) + ", " + STR(p.scd) + ")";
-#else
-  return STR(p.fst) + " " + STR(p.scd);
-#endif
-}
-
+X_T_X str STR(const T& cont) { str s = ""; FOREACH(it, cont)  s += STR(*it) + (next(it) != end(cont) ? " " : ""); return s; }
+X_T_U_X str STR(const pair<T, U>& p) { return STR(p.fst) + " " + STR(p.scd); }
 void ENDL() { cout << endl; }
 void COUT() {}
-X_T_Us_X void COUT(const T& t, Us&&... us) { cout << STR(t); cout << (sizeof...(us) ? ", " : ""); COUT(fwd<Us>(us)...); }
+X_T_Us_X void COUT(const T& t, Us&&... us) { cout << STR(t); cout << (sizeof...(us) ? " " : ""); COUT(fwd<Us>(us)...); }
 
 struct STDIN {
  public:
