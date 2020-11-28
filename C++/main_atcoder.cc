@@ -45,6 +45,8 @@ using namespace std;
 #define mp make_pair
 #define fst first
 #define scd second
+#define mv move
+#define fwd forward
 #define ASSERT(expr...) assert((expr))
 #define IN(x, y, z) (y <= x && x <= z)
 #define X_T_X template<typename T>
@@ -61,7 +63,7 @@ using str = string;
 X_S_X using bits = bitset<S>;
 X_T_S_X using arr = array<T, S>;
 X_T_X using vec = vector<T>;
-X_T_X using com = complex<T>;
+X_T_X using cop = complex<T>;
 X_T_X using pque = priority_queue<T, vector<T>>;
 X_T_X using pquel = priority_queue<T, vector<T>, less<T>>;
 X_T_X using pqueg = priority_queue<T, vector<T>, greater<T>>;
@@ -124,7 +126,7 @@ X_T_U_X void ERASE(T& t, const U& u) {
 }
 
 /* IO Functions. */
-X_T_X void CIN(com<T>& c);
+X_T_X void CIN(cop<T>& c);
 X_T_U_X void CIN(pair<T, U>& p);
 X_T_X void CIN(vec<T>& v);
 X_T_S_X void CIN(arr<T, S>& a);
@@ -132,7 +134,7 @@ X_T_X inline void CIN(T& t) { cin >> t; }
 inline void CIN(db& d) { str t; CIN(t); d = stod(t); }
 inline void CIN(ld& d) { str t; CIN(t); d = stold(t); }
 X_T_Us_X void CIN(T& t, Us&... us) { CIN(t); CIN(us...); }
-X_T_X void CIN(com<T>& c) { T a, b; CIN(a, b); c = {a, b}; }
+X_T_X void CIN(cop<T>& c) { T a, b; CIN(a, b); c = {a, b}; }
 X_T_U_X void CIN(pair<T, U>& p) { CIN(p.fst, p.scd); }
 X_T_X void CIN(vec<T>& v) { TRAV(e, v) CIN(e); }
 X_T_S_X void CIN(arr<T, S>& a) { TRAV(e, a) CIN(e); }
@@ -140,18 +142,9 @@ X_T_X void CINV(int& n, vec<T>& v) { v.resize(n); TRAV(e, v) CIN(e); }
 
 #define STR to_string
 
-str STR(char c) {
-  return str(1, c);
-}
-
-str STR(const char* cs) {
-  return static_cast<str>(cs);
-}
-
-str STR(const str& s) {
-  return s;
-}
-
+str STR(char c) { return str(1, c); }
+str STR(const char* cs) { return static_cast<str>(cs); }
+str STR(const str& s) { return s; }
 str STR(const bool& b) {
 #ifdef LOCAL
   return b ? "true" : "false";
@@ -159,19 +152,9 @@ str STR(const bool& b) {
   return STR(static_cast<int>(b));
 #endif
 }
-
-X_T_X str STR(const com<T>& c) {
-  ostringstream ss; ss << c; return ss.str();
-}
-
-X_S_X str STR(const bits<S>& bs) {
-  str s = "";
-  REP (i, S) s += char('0' + bs[i]);
-  return s;
-}
-
+X_T_X str STR(const cop<T>& c) { ostringstream ss; ss << c; return ss.str(); }
+X_S_X str STR(const bits<S>& bs) { str s = ""; REP (i, S) s += char('0' + bs[i]); return s; }
 X_T_U_X str STR(const pair<T, U>& p);
-
 X_T_X str STR(const T& cont) {
 #ifdef LOCAL
   str s = "{";
@@ -185,18 +168,17 @@ X_T_X str STR(const T& cont) {
   return s;
 #endif
 }
-
-X_T_U_X str STR(pair<T,U>& p) {
+X_T_U_X str STR(const pair<T, U>& p) {
 #ifdef LOCAL
   return "(" + STR(p.fst) + ", " + STR(p.scd) + ")";
 #else
-  return ts(p.fst) + " " + ts(p.scd);
+  return STR(p.fst) + " " + STR(p.scd);
 #endif
 }
 
 void ENDL() { cout << endl; }
 void COUT() {}
-X_T_Us_X void COUT(const T& t, Us&&... us) { cout << STR(t); cout << (sizeof...(us) ? ", " : ""); COUT(forward<Us>(us)...); }
+X_T_Us_X void COUT(const T& t, Us&&... us) { cout << STR(t); cout << (sizeof...(us) ? ", " : ""); COUT(fwd<Us>(us)...); }
 
 struct STDIN {
  public:
@@ -206,7 +188,6 @@ struct STDIN {
  private:
   FILE* fd_;
 };
-
 struct STDOUT {
  public:
   STDOUT(const string& path) { fd_ = freopen(path.c_str(), "w", stdout); }
@@ -218,9 +199,9 @@ struct STDOUT {
 
 /* Debugging Functions. */
 void DEBUG() {}
-X_T_Us_X void DEBUG(const T& t, Us&&... us) { cerr << STR(t); cerr << (sizeof...(us)  ? ", " : ""); DEBUG(forward<Us>(us)...); }
+X_T_Us_X void DEBUG(const T& t, Us&&... us) { cerr << STR(t); cerr << (sizeof...(us)  ? ", " : ""); DEBUG(fwd<Us>(us)...); }
 #ifdef LOCAL
-#  define DBG(...) cerr << #__VA_ARGS__ << ": "; DEBUG(__VA_ARGS__); cerr << " : at line: " << __LINE__ << endl;
+#  define DBG(...) do { cerr << #__VA_ARGS__ << ": "; DEBUG(__VA_ARGS__); cerr << " : at line: " << __LINE__ << endl; } while (0)
 #else
 #  define DBG(...)
 #endif
