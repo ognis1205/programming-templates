@@ -1,31 +1,32 @@
 /* $File: #FILENAME#, $Timestamp: #TIMESTAMP# */
 #ifdef LOCAL
-#  include <iostream>
-#  include <iomanip>
-#  include <string>
-#  include <vector>
 #  include <algorithm>
-#  include <sstream>
-#  include <queue>
-#  include <deque>
-#  include <bitset>
-#  include <iterator>
-#  include <list>
-#  include <stack>
-#  include <map>
-#  include <set>
-#  include <functional>
-#  include <numeric>
-#  include <complex>
-#  include <utility>
-#  include <limits>
-#  include <random>
-#  include <time.h>
-#  include <math.h>
-#  include <stdio.h>
-#  include <string.h>
-#  include <stdlib.h>
 #  include <assert.h>
+#  include <bitset>
+#  include <chrono>
+#  include <complex>
+#  include <deque>
+#  include <functional>
+#  include <iomanip>
+#  include <iostream>
+#  include <iterator>
+#  include <limits>
+#  include <list>
+#  include <map>
+#  include <math.h>
+#  include <numeric>
+#  include <queue>
+#  include <random>
+#  include <set>
+#  include <sstream>
+#  include <stack>
+#  include <stdio.h>
+#  include <stdlib.h>
+#  include <string.h>
+#  include <string>
+#  include <time.h>
+#  include <utility>
+#  include <vector>
 #else
 #  include <bits/stdc++.h>
 #endif
@@ -86,6 +87,22 @@ struct INIT {
     if (AUTO_FLUSH) cout << unitbuf;
   }
 } INIT;
+struct STDIN {
+ public:
+  STDIN(const string& path) { fd_ = freopen(path.c_str(), "r", stdin); }
+  ~STDIN() { if (fd_) fclose(stdin); }
+  operator bool(void) { return fd_ != nullptr; }
+ private:
+  FILE* fd_;
+};
+struct STDOUT {
+ public:
+  STDOUT(const string& path) { fd_ = freopen(path.c_str(), "w", stdout); }
+  ~STDOUT() { if (fd_) fclose(stdout); }
+  operator bool(void) { return fd_ != nullptr; }
+ private:
+  FILE* fd_;
+};
 
 /* Helper Functions. */
 inline constexpr int PCNT(const int& x) { return __builtin_popcount(x); }
@@ -96,22 +113,8 @@ X_T_X inline bool AMIN(T& x, const T& y) { return y < x ? x = y, 1 : 0; }
 X_T_X inline bool AMAX(T& x, const T& y) { return x < y ? x = y, 1 : 0; }
 X_T_X inline int SIZE(const T& t) { return static_cast<int>(t.size()); }
 X_T_S_X inline int SIZE(const T (&t)[S]) { return static_cast<int>(S); }
-X_T_U_X T FST(T l, T r, U p) {
-  r++; ASSERT(l <= r);
-  while (l < r) {
-    T m = l + (r - l) / 2;
-    p(m) ? r = m : l = m + 1;
-  }
-  return l;
-}
-X_T_U_X T LST(T l, T r, U p) {
-  l--; ASSERT(l <= r);
-  while (l < r) {
-    T m = l + (r - l + 1) / 2;
-    p(m) ? l = m : r = m - 1;
-  }
-  return l;
-}
+X_T_U_X T FST(T l, T r, U p) { r++; ASSERT(l <= r); while (l < r) { T m = l + (r - l) / 2; p(m) ? r = m : l = m + 1; } return l; }
+X_T_U_X T LST(T l, T r, U p) { l--; ASSERT(l <= r); while (l < r) { T m = l + (r - l + 1) / 2; p(m) ? l = m : r = m - 1; } return l; }
 X_T_X void REMDUP(vec<T>& v) { sort(ALL(v)); v.erase(unique(ALL(v)), end(v)); }
 X_T_U_X void ERASE(T& t, const U& u) { auto it = t.find(u); ASSERT(it != end(t)); t.erase(it); }
 
@@ -142,25 +145,6 @@ X_T_U_X str STR(const pair<T, U>& p) { return STR(p.fst) + " " + STR(p.scd); }
 void ENDL() { cout << endl; }
 void COUT() {}
 X_T_Us_X void COUT(const T& t, Us&&... us) { cout << STR(t); cout << (sizeof...(us) ? " " : ""); COUT(fwd<Us>(us)...); }
-
-struct STDIN {
- public:
-  STDIN(const string& path) { fd_ = freopen(path.c_str(), "r", stdin); }
-  ~STDIN() { if (fd_) fclose(stdin); }
-  operator bool(void) { return fd_ != nullptr; }
- private:
-  FILE* fd_;
-};
-struct STDOUT {
- public:
-  STDOUT(const string& path) { fd_ = freopen(path.c_str(), "w", stdout); }
-  ~STDOUT() { if (fd_) fclose(stdout); }
-  operator bool(void) { return fd_ != nullptr; }
- private:
-  FILE* fd_;
-};
-
-/* Debugging Functions. */
 void DEBUG() {}
 X_T_Us_X void DEBUG(const T& t, Us&&... us) { cerr << STR(t); cerr << (sizeof...(us)  ? ", " : ""); DEBUG(fwd<Us>(us)...); }
 #ifdef LOCAL
