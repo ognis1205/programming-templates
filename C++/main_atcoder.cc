@@ -115,8 +115,9 @@ X_T_X inline bool AMIN(T& x, const T& y) { return y < x ? x = y, 1 : 0; }
 X_T_X inline bool AMAX(T& x, const T& y) { return x < y ? x = y, 1 : 0; }
 X_T_X inline ll SIZE(const T& t) { return static_cast<ll>(t.size()); }
 X_T_S_X inline ll SIZE(const T (&t)[S]) { return static_cast<ll>(S); }
-X_T_Us_X inline void RESIZE(vector<T>& v, size_t&& s) { v.resize(s); }
-X_T_Us_X inline void RESIZE(vector<T>& v, size_t&& s, Us&&... ss) { v.resize(s); TRAV (e, v) RESIZE(e, fwd<Us>(ss)...); }
+X_T_Us_X inline void RESIZE(vec<T>& v, size_t&& s) { v.resize(s); }
+X_T_Us_X inline void RESIZE(vec<T>& v, size_t&& s, Us&&... ss) { v.resize(s); TRAV (e, v) RESIZE(e, fwd<Us>(ss)...); }
+X_T_X inline void FILL(vec<T>& v, const T& t) { fill(ALL(v), t); }
 X_T_U_X T FST(T l, T r, U p) { r++; ASSERT(l <= r); while (l < r) { T m = l + (r - l) / 2; p(m) ? r = m : l = m + 1; } return l; }
 X_T_U_X T LST(T l, T r, U p) { l--; ASSERT(l <= r); while (l < r) { T m = l + (r - l + 1) / 2; p(m) ? l = m : r = m - 1; } return l; }
 X_T_X void REMDUP(vec<T>& v) { sort(ALL(v)); v.erase(unique(ALL(v)), end(v)); }
