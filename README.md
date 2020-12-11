@@ -1,1 +1,1 @@
-# competitive-programming-templates
+# programming-templates
