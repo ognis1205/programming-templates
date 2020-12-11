@@ -8,6 +8,12 @@
   :defer
   :demand
 
+  ;; Package Conditional Section.
+  :if :when :unless
+  :defines
+  :functions
+  :preface
+
   ;; Package Dependency Section.
   :ensure-system-package
   :load-path
@@ -34,10 +40,6 @@
   :custom-face
 
   ;; Package Configuration Section.
-  :if :when :unless
-  :defines
-  :functions
-  :preface
   :init
   :config
   )
