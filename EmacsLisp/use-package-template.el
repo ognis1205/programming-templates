@@ -2,46 +2,46 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package #FILENAME# :no-require t :ensure t
+(use-package #FILENAME_WO_EXTENSION# :no-require t :ensure t
   ;; Package Loading Section.
-  ;;:disabled
-  ;;:defer
-  ;;:demand
+  :disabled
+  :defer
+  :demand
 
   ;; Package Dependency Section.
-  ;;:ensure-system-package
-  ;;:load-path
-  ;;:quelpa
-  ;;:pin
-  ;;:requires
-  ;;:after
+  :ensure-system-package
+  :load-path
+  :quelpa
+  :pin
+  :requires
+  :after
 
   ;; Package Mode Section.
-  ;;:delight
-  ;;:interpreter
-  ;;:hook
-  ;;:magic
-  ;;:magic-fallback
-  ;;:mode
+  :delight
+  :interpreter
+  :hook
+  :magic
+  :magic-fallback
+  :mode
 
   ;; Package Command Section.
-  ;;:commands
-  ;;:bind
-  ;;:bind-key
+  :commands
+  :bind
+  :bind-key
 
   ;; Package Custom Section.
-  ;;:custom
-  ;;:custom-face
+  :custom
+  :custom-face
 
   ;; Package Configuration Section.
-  ;;:if :when :unless
-  ;;:defines
-  ;;:functions
-  ;;:preface
-  ;;:init
-  ;;:config
+  :if :when :unless
+  :defines
+  :functions
+  :preface
+  :init
+  :config
   )
 
-(provide '#FILENAME#)
+(provide '#FILENAME_WO_EXTENSION#)
 
 ;;; #FILENAME# ends here
