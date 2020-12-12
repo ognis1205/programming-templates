@@ -2,7 +2,14 @@
 ;;; Commentary:
 ;;; Code:
 
-(use-package #FILENAME_WO_EXTENSION# :no-require t :ensure t ;; Package Loading Section. :disabled :defer :demand
+(use-package #FILENAME_WO_EXTENSION#
+  ;; Package Loading Section. :disabled :defer :demand
+  :no-require t
+  :ensure t
+  :disabled
+  :defer
+  :demand
+
   ;; Package Conditional Section.
   :if :when :unless
   :defines
