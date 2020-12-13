@@ -5,11 +5,6 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-try:
-   input = raw_input
-except NameError:
-   pass
-
 import os
 import sys
 import numpy as np
