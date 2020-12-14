@@ -1,0 +1,5 @@
+{
+    "pythonVersion": "#PYMAJORVER#.#PYMINORVER#",
+    "venv": "#PYVENVPATH#/versions/#PYVENV#",
+    "venvPath": "#PYVENVPATH#"
+}
