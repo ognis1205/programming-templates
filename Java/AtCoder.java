@@ -3,7 +3,9 @@ import java.io.*;
 import java.util.*;
 import java.text.*;
 import java.math.*;
+import java.util.function.*;
 import java.util.regex.*;
+import java.util.stream.*;
 
 public class AtCoder {
   private static FastScanner scanner;
@@ -58,10 +60,28 @@ public class AtCoder {
   }
 
   private class FastScanner {
-    private final InputStream in = System.in;
-    private final byte[] buffer = new byte[1024];
-    private int ptr = 0;
-    private int len = 0;
+    private InputStream in;
+    private byte[] buffer;
+    private int ptr;
+    private int len;
+
+    public FastScanner() {
+      this.in = System.in;
+      this.buffer = new byte[1024];
+      this.ptr = 0;
+      this.len = 0;
+    }
+
+    public FastScanner(String input) {
+      try {
+	this.in = new FileInputStream(new File(input));
+	this.buffer = new byte[1024];
+	this.ptr = 0;
+	this.len = 0;
+      } catch (FileNotFoundException e) {
+	e.printStackTrace();
+      }
+    }
 
     private boolean hasNextByte() {
       if (ptr < len) {
