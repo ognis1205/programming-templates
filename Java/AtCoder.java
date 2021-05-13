@@ -12,19 +12,19 @@ public class AtCoder {
   private static AtCoder solver;
 
   public static void main(String[] args) {
-    solver = new AtCoder();
-    scanner = solver.new FastScanner(System.in);
     try {
+      scan   = new FastScanner(new FileInputStream(new File(args[0])));
+      solver = new AtCoder(scan);
       solver.solve();
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
+  public AtCoder(FastScanner scan) {
+  }
+
   private void solve() {
-    System.out.println("Input int");
-    int a = scanner.nextInt();
-    System.out.println(a);
   }
 
   private static int getLowerBound(int[] target, int key) {
@@ -59,7 +59,7 @@ public class AtCoder {
     }
   }
 
-  private class FastScanner implements Closeable {
+  private static class FastScanner implements Closeable {
     private InputStream in;
     private byte[] buffer;
     private int ptr;
