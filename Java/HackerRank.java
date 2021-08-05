@@ -8,10 +8,26 @@ import java.util.regex.*;
 import java.util.stream.*;
 
 
-public class HackerRank {
-    public static void main(String[] args) {
-        System.out.println("Hello, World.");
-        System.out.println("Hello, Java."); 
-    }
-}
+public class #FILENAME# {
+  private static Scanner scanner;
 
+  private static #FILENAME# solver;
+
+  public static void main(String[] args) {
+    try {
+      scan   = new Scanner(new FileInputStream(new File(args[0])));
+      solver = new #FILENAME#(scan);
+      solver.solve();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public #FILENAME#(Scanner scan) {
+    // Placeholder.
+  }
+
+  private void solve() {
+    // Placeholder.
+  }
+}
