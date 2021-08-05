@@ -9,7 +9,7 @@ import java.util.stream.*;
 
 
 public class #FILENAME# {
-  private static Scanner scanner;
+  private static Scanner scan;
 
   private static #FILENAME# solver;
 
