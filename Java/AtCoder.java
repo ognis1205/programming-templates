@@ -8,7 +8,8 @@ import java.util.regex.*;
 import java.util.stream.*;
 
 public class AtCoder {
-  private static FastScanner scanner;
+  private static FastScanner scan;
+
   private static AtCoder solver;
 
   public static void main(String[] args) {
