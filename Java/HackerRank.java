@@ -1,5 +1,7 @@
 /* $File: #FILENAME#, $Timestamp: #TIMESTAMP# */
 import java.io.*;
+import java.nio.*;
+import java.nio.charset.*;
 import java.util.*;
 import java.text.*;
 import java.math.*;
