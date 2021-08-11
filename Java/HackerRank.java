@@ -11,9 +11,9 @@ import java.util.stream.*;
 
 
 public class #FILENAME# {
-  private static Scanner scan;
+  static Scanner scan;
 
-  private static #FILENAME# solver;
+  static #FILENAME# solver;
 
   public static void main(String[] args) {
     try {
@@ -25,11 +25,11 @@ public class #FILENAME# {
     }
   }
 
-  public #FILENAME#(Scanner scan) {
+  #FILENAME#(Scanner scan) {
     // Placeholder.
   }
 
-  private void solve() {
+  void solve() {
     // Placeholder.
   }
 }
