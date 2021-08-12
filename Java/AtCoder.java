@@ -5,14 +5,16 @@ import java.nio.charset.*;
 import java.util.*;
 import java.text.*;
 import java.math.*;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.*;
 import java.util.function.*;
 import java.util.regex.*;
 import java.util.stream.*;
 
 public class AtCoder {
-  private static FastScanner scan;
+  static FastScanner scan;
 
-  private static AtCoder solver;
+  static AtCoder solver;
 
   public static void main(String[] args) {
     try {
@@ -24,13 +26,13 @@ public class AtCoder {
     }
   }
 
-  public AtCoder(FastScanner scan) {
+  AtCoder(FastScanner scan) {
   }
 
-  private void solve() {
+  void solve() {
   }
 
-  private static int getLowerBound(int[] target, int key) {
+  static int getLowerBound(int[] target, int key) {
     int l = 0;
     int r = target.length - 1;
     int m = (l + r) / 2;
@@ -46,7 +48,7 @@ public class AtCoder {
     }
   }
 
-  private static int getUpperBound(int[] target, int key) {
+  static int getUpperBound(int[] target, int key) {
     int l = 0;
     int r = target.length - 1;
     int m = (l + r) / 2;
@@ -62,11 +64,15 @@ public class AtCoder {
     }
   }
 
-  private static class FastScanner implements Closeable {
+  static class FastScanner implements Closeable {
     private InputStream in;
+
     private byte[] buffer;
+
     private int ptr;
+
     private int len;
+
     private boolean[] isSpace;
 
     public FastScanner(InputStream in) {
