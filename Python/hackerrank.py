@@ -17,7 +17,7 @@ import sys
 from copy import deepcopy
 from math import sqrt
 from itertools import permutations
-from itertools import combinations
+from itertools import combinations, combinations_with_replacement
 from textwrap import dedent
 from traceback import format_exc
 
