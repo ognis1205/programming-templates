@@ -47,7 +47,7 @@ def array(n, generate=lambda i: 0):
     return [deepcopy(generate(i)) for i in range(n)]
 
 
-def #FILENAME():
+def #FILENAME#():
     INPUT = dedent("""\
     """)
 
@@ -57,6 +57,6 @@ def #FILENAME():
 
 if __name__ == "__main__":
    try:
-      #FILENAME()
+      #FILENAME#()
    except:
       print(format_exc(), file=sys.stderr)
