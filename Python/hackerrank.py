@@ -27,13 +27,10 @@ class Input(object):
         self._io = io.StringIO(text) if text else None
 
     def readline(self, parser=str, is_array=False):
-        return self._parse(parser) if is_array else self._parse(parser)[0]
-
-    def _parse(self, parser):
-        return map(parser, self._readline().split())
+        return map(parser, self._readline().split()) if is_array else parser(self._readline())
 
     def _readline(self):
-        return self._io.readline().strip() if self._io else input()
+        return self._io.readline().strip() if self._io else input().strip()
 
     def __enter__(self):
         return self
@@ -47,12 +44,20 @@ def array(n, generate=lambda i: 0):
     return [deepcopy(generate(i)) for i in range(n)]
 
 
-def #FILENAME#():
-    INPUT = dedent("""\
-    """)
+INPUT = dedent("""\
+This is a placeholder for input.
+You can mock stdio here.
+123 456
+123
+""")
 
+
+def #FILENAME#():
     with Input(INPUT) as input_file:
-        pass
+        print(input_file.readline())
+        print(input_file.readline())
+        print(input_file.readline(int, is_array=True))
+        print(input_file.readline(int))
 
 
 if __name__ == "__main__":
