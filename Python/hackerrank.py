@@ -16,21 +16,28 @@ import os
 import sys
 from copy import deepcopy
 from math import sqrt
-from itertools import permutations
-from itertools import combinations, combinations_with_replacement
+from itertools import (
+    combinations,
+    combinations_with_replacement,
+    islice,
+    permutations
+)
 from textwrap import dedent
 from traceback import format_exc
 
 
 class Input(object):
     def __init__(self, text=None):
-        self._io = io.StringIO(text) if text else None
+        self._io = io.StringIO(text) if text else sys.stdin
 
     def readline(self, parser=str, is_array=False):
         return map(parser, self._readline().split()) if is_array else parser(self._readline())
 
     def _readline(self):
-        return self._io.readline().strip() if self._io else input().strip()
+        return self._io.readline().strip()
+
+    def __iter__(self):
+        return iter(map(lambda x: x.strip(), self._io))
 
     def __enter__(self):
         return self
