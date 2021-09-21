@@ -25,19 +25,26 @@ from itertools import (
 from textwrap import dedent
 from traceback import format_exc
 
-
 class Input(object):
     def __init__(self, text=None):
         self._io = io.StringIO(text) if text else sys.stdin
 
     def readline(self, parser=str, is_array=False):
-        return map(parser, self._readline().split()) if is_array else parser(self._readline())
+        asarray = lambda line: self._asarray(parser, line)
+        return asarray(self._readline()) if is_array else parser(self._readline())
+
+    def readlines(self, n, parser=str, is_array=False):
+        asarray = lambda line: self._asarray(parser, line)
+        return map(asarray, self._readlines(n)) if is_array else map(parser, self._readlines(n))
 
     def _readline(self):
         return self._io.readline().strip()
 
-    def __iter__(self):
-        return iter(map(lambda x: x.strip(), self._io))
+    def _readlines(self, n):
+        return [x.strip() for x in islice(self._io, n)]
+
+    def _asarray(self, parser, line):
+        return map(parser, line.split())
 
     def __enter__(self):
         return self
