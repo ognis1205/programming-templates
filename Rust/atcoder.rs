@@ -2,7 +2,7 @@
 use std::io;
 use std::process;
 
-macro_rules! wsv {
+macro_rules! parse {
     ($it: expr) => {
         $it.next().unwrap().parse().unwrap()
     };
@@ -11,12 +11,12 @@ macro_rules! wsv {
     };
 }
 
-fn read_line(buffer: &mut String) -> Result<(), io::Error> {
+fn read_tokens<'a>(buffer: &'a mut String) -> Result<str::SplitWhitespace<'a>, io::Error> {
     let _ = match io::stdin().read_line(buffer) {
         Ok(byte) => byte,
         Err(e) => return Err(e),
     };
-    Ok(())
+    Ok(buffer.split_whitespace())
 }
 
 /* Main Function.
@@ -28,18 +28,10 @@ fn read_line(buffer: &mut String) -> Result<(), io::Error> {
  *  - DON'T GET STUCK ON ONE APPROACH
  */
 fn main() {
-    let mut buf = String::new();
-    match read_line(&mut buf) {
-        Ok(_) => (),
-        Err(e) => {
-            eprintln!("Error: {}", e);
-            process::exit(1);
-        }
-    };
-
-    let mut it = buf.split_whitespace();
-    let n: usize = wsv!(it);
-    let a: Vec<u64> = (0..n).map(|_| wsv!(it)).collect();
+    let mut line = String::new();
+    let mut toks = read_tokens(&mut line).expect("n: the number of values");
+    let n: usize = parse!(toks);
+    let a: Vec<u64> = (0..n).map(|_| parse!(toks)).collect();
 
     let mut sum: u64 = 0;
     for i in 0..n {
